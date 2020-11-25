@@ -1,8 +1,5 @@
 import java.io.*;
-import java.awt.*;
-import java.lang.*;
-import java.util.Scanner;
-import java.util.Vector;
+import java.util.*;
 
 public class game {
     public static void main(String[] args) {
