@@ -1,108 +1,23 @@
-import java.awt.*;
-import javax.swing.*;
-import java.net.*;
 import java.io.*;
+import java.net.*;
 
 public class Server {
-    private static int localHostport = 500;
-    public static void main(String[] args) throws IOException{
-        ServerSocket s = new ServerSocket(localHostport);
-        System.out.println("服务器开启");
-        while(true)
-        {
-            Socket socket = s.accept();
-            System.out.println(socket);
-            GetMessage getMessage = new GetMessage();
-            Thread thread = new Thread(getMessage);
-            thread.start();
-        }
-    }
-}
+    public static void main(String[] args) throws IOException {
+        ServerSocket ss = new ServerSocket(8080); // 创建服务器端套接字，指定该服务器程序的端口。
 
-class GetMessage implements Runnable{
-    private int remotePort = 5001;
-    private String remoteAdress = "localhost";
-    private InputStream inputStream;
-    private OutputStream outputStream;
-    private Socket socketGet;
-    private Socket socketSendmessage;
-    private boolean socketIsExits = false;
-    private int sum = 0;
+        while (true) { // 正常情况下，服务器程序要一直运行，以便随时都能接收客户端的连接。
 
-    private byte[] buffer;
+            Socket soc = null; // 客户端套接字对象，初始化为空。
 
-    public GetMessage(Socket socket)
-    {
-        this.socketGet = socket;
-        try{
-            inputStream = socketGet.getInputStream();
-            outputStream = socketGet.getOutputStream();
+            soc = ss.accept(); // 服务器接收到客户端连接，返回该客户端对象，此方法会一直阻塞，直到接收到客户端的连接。
 
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
+            if (soc != null) { // 如果客户端连接了，执行下面代码。
 
-    public void run(){
-        String str = "";
-        int n = 0;
-        while (true) {
-            try{
-                buffer = new byte[2048];
-                n = inputStream.read(buffer);
-                str = new String(buffer,0,n);
-                System.out.print("客户端：" + str);
-                sendMessage();
-            }catch (IOException e){
-                e.printStackTrace();
-                break;
-            }
-            if(str.equals("q"))
-            {
-                break;
+                DealWithEveryClient dec = new DealWithEveryClient(soc); // 为每个客户端开启一个聊天窗口。
+
+                dec.start(); // 开启此线程。
             }
         }
-        try{
-            if(socketGet != null)
-            {
-                socketGet.close();
-            }
-            if(inputStream != null)
-            {
-                inputStream.close();
-            }
-        }catch(Exception e){}
     }
 
-
-public void sendMessage() throws IOException{
-    if (socketIsExits) {
-        try {
-            String input = "======" + (sum++);
-            System.out.println("服务器发送 socket :" + this.socketSendmessage);
-            outputStream.write(input.getBytes());
-            System.out.println("服务器 ： " + input);
-            outputStream.flush();
-        } catch (Exception e) {
-            System.out.println("客户端不存在");
-            checkSocket();
-        }
-        
-    }
-    else
-    {
-        checkSocket();
-    }
-}
-
-private void checkSocket()
-{
-    try{
-        socketSendmessage = new Socket(remoteAdress,remotePort);
-        outputStream = socketSendmessage.getOutputStream();
-        socketIsExits = true;
-    }catch (Exception e){
-        socketIsExits = false;
-    }
-}
 }

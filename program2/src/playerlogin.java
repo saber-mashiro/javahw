@@ -9,7 +9,7 @@ public class playerlogin {
     public void initUI()
     {
         JFrame JF = new JFrame();
-        JF.setTitle("英语六级词汇学习游戏系统");
+        JF.setTitle("英语六级学习系统");
         JF.setSize(400,250);
         JF.setDefaultCloseOperation(3);
         JF.setLocationRelativeTo(null);
