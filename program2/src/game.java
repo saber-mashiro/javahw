@@ -23,6 +23,8 @@ public class game {
                 str[count] = line;
                 count++;
             }
+            int score = 20;
+            while(score!=0){
             int tmp = position(2100);
             //System.out.println(str[tmp]);
             // v.resize(str[tmp].size());
@@ -58,10 +60,21 @@ public class game {
             Scanner scanner = new Scanner(System.in);
             char cha1 = scanner.next().charAt(0);
             char cha2 = scanner.next().charAt(0);
+            
+
             if (cha1 == c1 && cha2 == c2) {
-                System.out.println("right +1");
+                score++;
+                System.out.println(score);
                 System.out.println(result);
+                fileread(result,str[tmp+1],"true.txt");
             }
+            else
+            {
+                score--;
+                System.out.println(score);
+                System.out.println(result);//change into file 
+                fileread(result,str[tmp+1],"false.txt");
+            }}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,6 +94,26 @@ public class game {
     public static int position2(int k) {
         int num = (int) (Math.random() * k);
         return num;
+    }
+
+    public static void fileread(String needword,String cong,String file)
+    {
+        FileWriter fl;
+        try{
+            fl = new FileWriter(file,true);
+            fl.write(needword); 
+            fl.write("  ");
+            fl.write(cong);
+            fl.write("\n");
+            fl.flush();
+            fl.close();
+            }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+   // FileOutputStream fos = new FileOutputStream(file,true);
+    //fos.write(flie.getByte());
+    //fos.close(); 
     }
 
 }
