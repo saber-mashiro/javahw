@@ -24,61 +24,55 @@ public class game {
                 count++;
             }
             int score = 20;
-            while(score!=0){
-            int tmp = position(2100);
-            //System.out.println(str[tmp]);
-            // v.resize(str[tmp].size());
-            // System.out.println(v[0]);
-            char[] v = str[tmp].toCharArray();
-            int tmp2 = position2(str[tmp].length());
-            // char c1 = v[tmp2];
+            zerofile("true.txt");
+            zerofile("false.txt");
+            while (score != 0) {//������ʱ��
+                int tmp = position(2100);
+                char[] v = str[tmp].toCharArray();
+                int tmp2 = position2(str[tmp].length());
+                int tmp3 = position2(str[tmp].length());
+                while (tmp3 == tmp2) {
+                    tmp3 = position2(str[tmp].length());
+                }
+                char c1, c2;// ȱʧ�������ַ���ǣ����Է��򵥴�
+                String result;
+                result = str[tmp];
+                if (tmp2 < tmp3) {
+                    c1 = v[tmp2];
+                    c2 = v[tmp3];
+                    // System.out.println(tmp2 + " " + tmp3);
+                } else {
+                    c1 = v[tmp3];
+                    c2 = v[tmp2];
+                    // System.out.println(tmp3 + " " + tmp2);
+                }
+                v[tmp2] = '_';
+                v[tmp3] = '_';
+                for (int i = 0; i < str[tmp].length(); i++) {
+                    System.out.print(v[i]);
+                }
+                System.out.print("\n");
+                System.out.println(str[tmp + 1]);
+                Scanner scanner = new Scanner(System.in);
+                char cha1 = scanner.next().charAt(0);
+                char cha2 = scanner.next().charAt(0);
 
-            int tmp3 = position2(str[tmp].length());
-            while (tmp3 == tmp2) {
-                tmp3 = position2(str[tmp].length());
-            }            
-            char c1, c2;
-            String result ;
-            result = str[tmp];
-            if (tmp2 < tmp3) {
-                c1 = v[tmp2];
-                c2 = v[tmp3];
-                //System.out.println(tmp2 + "  " + tmp3);
-            } else {
-                c1 = v[tmp3];
-                c2 = v[tmp2];
-                //System.out.println(tmp3 + "  " + tmp2);
+                if (cha1 == c1 && cha2 == c2) {
+                    score++;
+                    System.out.println(score);
+                    System.out.println(result);
+                    fileread(result, str[tmp + 1], "true.txt");
+                } else {
+                    score--;
+                    System.out.println(score);
+                    System.out.println(result);// change into file
+                    fileread(result, str[tmp + 1], "false.txt");
+                }
             }
-            v[tmp2] = '_';
-            v[tmp3] = '_';
-            for(int i = 0;i<str[tmp].length();i++)
-            {
-                System.out.print(v[i]);
-            }
-            System.out.print("\n");
-            System.out.println(str[tmp + 1]);
-            Scanner scanner = new Scanner(System.in);
-            char cha1 = scanner.next().charAt(0);
-            char cha2 = scanner.next().charAt(0);
-            
-
-            if (cha1 == c1 && cha2 == c2) {
-                score++;
-                System.out.println(score);
-                System.out.println(result);
-                fileread(result,str[tmp+1],"true.txt");
-            }
-            else
-            {
-                score--;
-                System.out.println(score);
-                System.out.println(result);//change into file 
-                fileread(result,str[tmp+1],"false.txt");
-            }}
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public static int position(int k) {
@@ -96,24 +90,32 @@ public class game {
         return num;
     }
 
-    public static void fileread(String needword,String cong,String file)
-    {
+    //д�뵥�ʱ�
+    public static void fileread(String needword, String cong, String file) {
         FileWriter fl;
-        try{
-            fl = new FileWriter(file,true);
-            fl.write(needword); 
+        try {
+            fl = new FileWriter(file, true);
+            fl.write(needword);
             fl.write("  ");
             fl.write(cong);
             fl.write("\n");
             fl.flush();
             fl.close();
-            }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-   // FileOutputStream fos = new FileOutputStream(file,true);
-    //fos.write(flie.getByte());
-    //fos.close(); 
     }
 
+    //���֮ǰ���ļ�����
+    public static void zerofile(String file) {
+        FileWriter fl;
+        try {
+            fl = new FileWriter(file);
+            fl.write("");
+            fl.flush();
+            fl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
