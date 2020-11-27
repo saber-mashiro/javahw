@@ -7,101 +7,234 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /*
- *·şÎñÆ÷ÓëÒ»¸ö»ò¶à¸ö¿Í»§¶ËÁÄÌì£¬¿Í»§¶ËÉè¼ÆË¼Â·£º
- * 1¡¢´´½¨¿Í»§¶ËSocket¶ÔÏó£¬Ö¸¶¨ÒªÁ¬½ÓµÄ·şÎñÆ÷IPºÍ¶Ë¿ÚºÅ¡£
- * 2¡¢½¨Á¢Á¬½Óºó£¬Í¨¹ıSocketµÄ·½·¨»ñÈ¡ÍøÂçIOÁ÷¡£
- * 3¡¢Í¨¹ıÊÂ¼ş¼àÌı»úÖÆ°ÑÎÄ±¾¿òÖĞµÄÏûÏ¢´ò°ü³É×Ö½ÚÊı×é£¬Í¨¹ıÍøÂçÊä³öÁ÷Ğ´µ½ÍøÂçÖĞ£¬ÓÉ·şÎñÆ÷¶ÁÈë¡£
- * 4¡¢ÊÂÏÈ¿ªÆôÒ»¸öÏß³Ì£¬Í¨¹ıÍøÂçÊäÈëÁ÷£¬½ÓÊÕÀ´×Ô·şÎñÆ÷µÄÏûÏ¢£¬²¢ÏÔÊ¾ÔÚÁÄÌìÎÄ±¾ÇøÓò¡£
- * 5¡¢µ±ÁÄÌì´°¿Ú¹Ø±ÕÊ±£¬¶Ï¿ªÓë·şÎñÆ÷µÄÁ¬½Ó¡£
+ *æœåŠ¡å™¨ä¸ä¸€ä¸ªæˆ–å¤šä¸ªå®¢æˆ·ç«¯èŠå¤©ï¼Œå®¢æˆ·ç«¯è®¾è®¡æ€è·¯ï¼š
+ * 1ã€åˆ›å»ºå®¢æˆ·ç«¯Socketå¯¹è±¡ï¼ŒæŒ‡å®šè¦è¿æ¥çš„æœåŠ¡å™¨IPå’Œç«¯å£å·ã€‚
+ * 2ã€å»ºç«‹è¿æ¥åï¼Œé€šè¿‡Socketçš„æ–¹æ³•è·å–ç½‘ç»œIOæµã€‚
+ * 3ã€é€šè¿‡äº‹ä»¶ç›‘å¬æœºåˆ¶æŠŠæ–‡æœ¬æ¡†ä¸­çš„æ¶ˆæ¯æ‰“åŒ…æˆå­—èŠ‚æ•°ç»„ï¼Œé€šè¿‡ç½‘ç»œè¾“å‡ºæµå†™åˆ°ç½‘ç»œä¸­ï¼Œç”±æœåŠ¡å™¨è¯»å…¥ã€‚
+ * 4ã€äº‹å…ˆå¼€å¯ä¸€ä¸ªçº¿ç¨‹ï¼Œé€šè¿‡ç½‘ç»œè¾“å…¥æµï¼Œæ¥æ”¶æ¥è‡ªæœåŠ¡å™¨çš„æ¶ˆæ¯ï¼Œå¹¶æ˜¾ç¤ºåœ¨èŠå¤©æ–‡æœ¬åŒºåŸŸã€‚
+ * 5ã€å½“èŠå¤©çª—å£å…³é—­æ—¶ï¼Œæ–­å¼€ä¸æœåŠ¡å™¨çš„è¿æ¥ã€‚
  */
 
-public class ClientFrame extends JFrame implements ActionListener,Runnable{ //¿Í»§¶ËÁÄÌì´°¿Ú£¬ÊµÏÖÁ½¸ö½Ó¿Ú£¬×÷Îª¶¯×÷ÊÂ¼şÕìÌıÆ÷ºÍÏß³ÌÈÎÎñÀà¡£
+public class ClientFrame extends JFrame implements ActionListener,Runnable{//å®¢æˆ·ç«¯èŠå¤©çª—å£ï¼Œå®ç°ä¸¤ä¸ªæ¥å£ï¼Œä½œä¸ºåŠ¨ä½œäº‹ä»¶ä¾¦å¬å™¨å’Œçº¿ç¨‹ä»»åŠ¡ç±»ã€‚
     
-    Socket soc; //¿Í»§¶ËÌ×½Ó×Ö¡£
+    Socket soc; //å®¢æˆ·ç«¯å¥—æ¥å­—
     
-    JTextField jf;  //ÎÄ±¾¿ò¡£
+    JTextField jf;  //æ–‡æœ¬æ¡†ã€‚
     
-    JTextArea jta;  //ÎÄ±¾ÇøÓò¡£
+    JTextArea jta;  //æ–‡æœ¬åŒºåŸŸã€‚
     
-    JButton jb; //°´Å¥¡£
+    JButton jb; //æŒ‰é’®ã€‚
     
-    JScrollPane jsp;    //¹ö¶¯Ãæ°å¡£
+    JScrollPane jsp;    //æŒ‰é’®ã€‚
     
-    InputStream in;     //ÊäÈëÁ÷£¬ÓÃÀ´Ö¸ÏòSocket·½·¨»ñÈ¡µÄÍøÂçÊäÈëÁ÷¡£
+    InputStream in;    //è¾“å…¥æµï¼Œç”¨æ¥æŒ‡å‘Socketæ–¹æ³•è·å–çš„ç½‘ç»œè¾“å…¥æµã€‚
     
-    OutputStream out;   //Êä³öÁ÷£¬ÓÃÀ´Ö¸ÏòSocket·½·¨»ñÈ¡µÄÍøÂçÊä³öÁ÷¡£
+    OutputStream out;   //è¾“å‡ºæµï¼Œç”¨æ¥æŒ‡å‘Socketæ–¹æ³•è·å–çš„ç½‘ç»œè¾“å‡ºæµã€‚
     
-    public ClientFrame() throws IOException{    //¹¹Ôì·½·¨£¬ÓÃÀ´³õÊ¼»¯¶ÔÏóÒÔ¼°×öÒ»Ğ©ÉèÖÃ¡£
+    byte[] byall ;
+
+    public ClientFrame() throws IOException{ //æ„é€ æ–¹æ³•ï¼Œç”¨æ¥åˆå§‹åŒ–å¯¹è±¡ä»¥åŠåšä¸€äº›è®¾ç½®ã€‚
         
-        super("¿Í»§¶ËÁÄÌì¿ò");      //µ÷ÓÃ³¬ÀàJFrameµÄ¹¹Ôì·½·¨ÉèÖÃÁÄÌì¿òµÄ±êÌâ¡£
+        super("?????");       //è°ƒç”¨è¶…ç±»JFrameçš„æ„é€ æ–¹æ³•è®¾ç½®èŠå¤©æ¡†çš„æ ‡é¢˜ã€‚
         
-        soc= new Socket("127.0.0.1",8080);  //ÊµÀı»¯¿Í»§¶ËÌ×½Ó×Ö£¬Ö¸¶¨ÒªÁ¬½ÓµÄ·şÎñÆ÷³ÌĞòµÄIPºÍ¶Ë¿Ú¡£
+        soc= new Socket("127.0.0.1",8080);  //å®ä¾‹åŒ–å®¢æˆ·ç«¯å¥—æ¥å­—ï¼ŒæŒ‡å®šè¦è¿æ¥çš„æœåŠ¡å™¨ç¨‹åºçš„IPå’Œç«¯å£ã€‚
         
-        in=soc.getInputStream();    //»ñÈ¡SocketµÄÊäÈëÁ÷¡£
+        in=soc.getInputStream();    //è·å–Socketçš„è¾“å…¥æµã€‚
         
-        out=soc.getOutputStream();  //»ñÈ¡SocketµÄÊä³öÁ÷¡£
+        out=soc.getOutputStream();  //è·å–Socketçš„è¾“å‡ºæµã€‚
         
-        jf=new JTextField(20);      //³õÊ¼»¯»¯ÎÄ±¾¿ò£¬ÉèÖÃÈİÁ¿Îª20¸ö×Ö·û¡£
+        jf=new JTextField(20);      //åˆå§‹åŒ–åŒ–æ–‡æœ¬æ¡†ï¼Œè®¾ç½®å®¹é‡ä¸º20ä¸ªå­—ç¬¦ã€‚
         
-        jta=new JTextArea(20,20);   //³õÊ¼»¯ÎÄ±¾ÇøÓò²¢ÉèÖÃÆäÎª20ĞĞºÍ20ÁĞ£¨Ò»¸ö×Ö·û´ú±íÒ»ÁĞ£©¡£
+        jta=new JTextArea(20,20);    //åˆå§‹åŒ–æ–‡æœ¬åŒºåŸŸå¹¶è®¾ç½®å…¶ä¸º20è¡Œå’Œ20åˆ—ï¼ˆä¸€ä¸ªå­—ç¬¦ä»£è¡¨ä¸€åˆ—ï¼‰ã€‚
         
-        jb=new JButton("·¢ËÍ");     //³õÊ¼»¯°´Å¥¡£
+        jb=new JButton("????");      //åˆå§‹åŒ–æŒ‰é’®ã€‚
         
-        jsp=new JScrollPane(jta);   //³õÊ¼»¯¹ö¶¯Ãæ°å£¬²¢°ÑÎÄ±¾ÇøÓò·ÅÖÃÔÚ¹ö¶¯Ãæ°åÖĞ¡£
+        jsp=new JScrollPane(jta);   //åˆå§‹åŒ–æ»šåŠ¨é¢æ¿ï¼Œå¹¶æŠŠæ–‡æœ¬åŒºåŸŸæ”¾ç½®åœ¨æ»šåŠ¨é¢æ¿ä¸­ã€‚
         
-        this.setLayout(new FlowLayout());   //ÉèÖÃ´°Ìå²¼¾ÖÎªÁ÷Ê½²¼¾Ö£¨´Ë²¼¾ÖÎª´Ó×óÏòÓÒÒ»´ÎÌí¼Ó×é¼ş£¬Ò»ĞĞ·Å²»ÏÂÁË×ªµ½µÚ¶şĞĞ£©¡£
+        this.setLayout(new FlowLayout());  //è®¾ç½®çª—ä½“å¸ƒå±€ä¸ºæµå¼å¸ƒå±€ï¼ˆæ­¤å¸ƒå±€ä¸ºä»å·¦å‘å³ä¸€æ¬¡æ·»åŠ ç»„ä»¶ï¼Œä¸€è¡Œæ”¾ä¸ä¸‹äº†è½¬åˆ°ç¬¬äºŒè¡Œï¼‰ã€‚
         
-        this.add(jf);   //½«ÎÄ±¾¿ò¼Óµ½´°ÌåÖĞ¡£
+        this.add(jf);  //å°†æ–‡æœ¬æ¡†åŠ åˆ°çª—ä½“ä¸­ã€‚
         
-        this.add(jb);   //½«°´Å¥¼Óµ½´°ÌåÖĞ¡£
+        this.add(jb);    //å°†æŒ‰é’®åŠ åˆ°çª—ä½“ä¸­ã€‚
         
-        this.add(jsp);  //°Ñ¹ö¶¯Ãæ°å¼Óµ½´°ÌåÖĞ¡£
+        this.add(jsp); //æŠŠæ»šåŠ¨é¢æ¿åŠ åˆ°çª—ä½“ä¸­ã€‚
+
+        jb.addActionListener(this); //ä¸ºæŒ‰é’®æ³¨å†ŒåŠ¨ä½œäº‹ä»¶ä¾¦å¬å™¨ï¼ˆå½“ç‚¹å‡»æŒ‰é’®æ—¶è§¦å‘åŠ¨ä½œäº‹ä»¶ï¼‰ï¼Œå› ä¸ºè¯¥ç±»å®ç°äº†åŠ¨ä½œäº‹ä»¶ä¾¦å¬å™¨æ¥å£ï¼Œæ‰€ä»¥è¯¥ç±»å¯¹è±¡å°±æ˜¯ä¾¦å¬å™¨ã€‚
         
-        jb.addActionListener(this); //Îª°´Å¥×¢²á¶¯×÷ÊÂ¼şÕìÌıÆ÷£¨µ±µã»÷°´Å¥Ê±´¥·¢¶¯×÷ÊÂ¼ş£©£¬ÒòÎª¸ÃÀàÊµÏÖÁË¶¯×÷ÊÂ¼şÕìÌıÆ÷½Ó¿Ú£¬ËùÒÔ¸ÃÀà¶ÔÏó¾ÍÊÇÕìÌıÆ÷¡£
+        jf.addActionListener(this);  //ä¸ºæ–‡æœ¬æ¡†æ³¨å†ŒåŠ¨ä½œäº‹ä»¶ä¾¦å¬å™¨ï¼Œå½“æŒ‰ä¸‹å›è½¦è§¦å‘åŠ¨ä½œäº‹ä»¶ã€‚
         
-        jf.addActionListener(this); //ÎªÎÄ±¾¿ò×¢²á¶¯×÷ÊÂ¼şÕìÌıÆ÷£¬µ±°´ÏÂ»Ø³µ´¥·¢¶¯×÷ÊÂ¼ş¡£
+        this.setBounds(300,300,400,400);    //è®¾ç½®çª—ä½“è¾¹ç•Œå’Œå¤§å°ã€‚
         
-        this.setBounds(300,300,400,400);    //ÉèÖÃ´°Ìå±ß½çºÍ´óĞ¡¡£
+        this.setVisible(true);       //è®¾ç½®çª—ä½“å¯è§ï¼ˆçª—ä½“é»˜è®¤æ˜¯ä¸å¯è§çš„ï¼‰ã€‚
         
-        this.setVisible(true);      //ÉèÖÃ´°Ìå¿É¼û£¨´°ÌåÄ¬ÈÏÊÇ²»¿É¼ûµÄ£©¡£
-        
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //ÉèÖÃ´°ÌåÄ¬ÈÏ¹Ø±Õ²Ù×÷¡£
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //è®¾ç½®çª—ä½“é»˜è®¤å…³é—­æ“ä½œã€‚
         
     }
-    public void actionPerformed(ActionEvent e){     //ActionListener½Ó¿ÚÀïµÄ·½·¨£¬±ØĞëÊµÏÖ£¬ÓÃÀ´´¦Àíµ±µã»÷°´Å¥»òÕßÔÚÎÄ±¾¿ò°´ÏÂ»Ø³µºóµÄ¶¯×÷ÊÂ¼ş¡£
+
+    public void txtString() {
+        FileReader file = null;
+        try {
+            file = new FileReader("word.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(file);
+        try {
+            String line;
+            int count = 0;
+            String[] str = new String[3000];
+            while ((line = br.readLine()) != null) {
+                str[count] = line;
+                count++;
+            }
+            int score = 20;
+            zerofile("true.txt");
+            zerofile("false.txt");
+            while (score != 0) {
+                int tmp = position(2100);
+                char[] v = str[tmp].toCharArray();
+                int tmp2 = position2(str[tmp].length());
+                int tmp3 = position2(str[tmp].length());
+                while (tmp3 == tmp2) {
+                    tmp3 = position2(str[tmp].length());
+                }
+                char c1, c2;
+                String result;
+                result = str[tmp];
+                if (tmp2 < tmp3) {
+                    c1 = v[tmp2];
+                    c2 = v[tmp3];
+                    // System.out.println(tmp2 + " " + tmp3);
+                } else {
+                    c1 = v[tmp3];
+                    c2 = v[tmp2];
+                    // System.out.println(tmp3 + " " + tmp2);
+                }
+                v[tmp2] = '_';
+                v[tmp3] = '_';
+
+                String s = new String(v); 
+                // for (int i = 0; i < str[tmp].length(); i++) {
+                //     System.out.print(v[i]);
+                // }
+                jta.append(s+ "\n");
+                //System.out.print("\n");
+                jta.append(str[tmp + 1] + "\n");
+                //System.out.println(str[tmp + 1]);
+                // Scanner scanner = new Scanner(System.in);
+                // char cha1 = scanner.next().charAt(0);
+                // char cha2 = scanner.next().charAt(0);
+                String clientin = jf.getText();
+                char [] fit = clientin.toCharArray();
+                //??????,????????????
+                jta.append(clientin);
+                String getscore;
+                if (fit[0] == c1 && fit[2] == c2) {
+                    score++;
+                    //System.out.println(score);
+                    getscore = Integer.toString(score);
+                    byte[] by= getscore.getBytes();
+                    byall = by.clone();
+                    jta.append(getscore + "\n");
+                    jta.append(result+"\n");
+                    //System.out.println(result);
+                    fileread(result, str[tmp + 1], "true.txt");
+                } else {
+                    score--;
+                    getscore = Integer.toString(score);
+                    byte[] by= getscore.getBytes();
+                    byall = by.clone();
+                    jta.append(getscore + "\n");
+                    //System.out.println(score);
+                    jta.append(result+"\n");
+                    //System.out.println(result);// change into file
+                    fileread(result, str[tmp + 1], "false.txt");
+                }
+                jf.setText("");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int position(int k) {
+        int num = (int) (Math.random() * k);
+        if (num % 2 == 0) {
+            return num;
+        } else {
+            return num + 1;
+        }
+
+    }
+    public static int position2(int k) {
+        int num = (int) (Math.random() * k);
+        return num;
+    }
+    public static void fileread(String needword, String cong, String file) {
+        FileWriter fl;
+        try {
+            fl = new FileWriter(file, true);
+            fl.write(needword);
+            fl.write("  ");
+            fl.write(cong);
+            fl.write("\n");
+            fl.flush();
+            fl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void zerofile(String file) {
+        FileWriter fl;
+        try {
+            fl = new FileWriter(file);
+            fl.write("");
+            fl.flush();
+            fl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void actionPerformed(ActionEvent e){     //ActionListeneræ¥å£é‡Œçš„æ–¹æ³•ï¼Œå¿…é¡»å®ç°ï¼Œç”¨æ¥å¤„ç†å½“ç‚¹å‡»æŒ‰é’®æˆ–è€…åœ¨æ–‡æœ¬æ¡†æŒ‰ä¸‹å›è½¦åçš„åŠ¨ä½œäº‹ä»¶ã€‚
         
-        String jfText=jf.getText(); //»ñÈ¡ÎÄ±¾¿òÖĞµÄÄÚÈİ¡£
+        txtString();
+        //String jfText = jf.getText();//è·å–æ–‡æœ¬æ¡†ä¸­çš„å†…å®¹ã€‚
         
-        if(jfText.length()>0){  //µ±ÎÄ±¾¿òÀïÃæ×Ö·û´®³¤¶È´óÓÚÁãÊ±£¨Èç¹û³¤¶ÈÎª0£¬ÔòÃ»ÓĞÒâÒå£©Ö´ĞĞÏÂÃæÓï¾ä¡£
+        //if(jfText.length()>0){ //å½“æ–‡æœ¬æ¡†é‡Œé¢å­—ç¬¦ä¸²é•¿åº¦å¤§äºé›¶æ—¶ï¼ˆå¦‚æœé•¿åº¦ä¸º0ï¼Œåˆ™æ²¡æœ‰æ„ä¹‰ï¼‰æ‰§è¡Œä¸‹é¢è¯­å¥ã€‚
             
-            byte[] by=jfText.getBytes();    //½«×Ö·û´®±äÎª×Ö½ÚÊı×é¡£
+        //    byte[] by= getscore;    //å°†å­—ç¬¦ä¸²å˜ä¸ºå­—èŠ‚æ•°ç»„ã€‚
             
             try {
-                out.write(by);  //½«×Ö½ÚÊı×éĞ´ÈëÍøÂçÊä³öÁ÷ÖĞ£¬ÓÉ·şÎñÆ÷À´½ÓÊÕ¡£
-                
-                jta.append("ÄãËµ£º"+jfText+"\n");   //½«¿Í»§¶ËµÄÏûÏ¢ÏÔÊ¾ÔÚÎÄ±¾ÇøÄÚ¡£
-                
-                jf.setText("");     //·¢ËÍÍêÏûÏ¢ºó£¬Çå¿ÕÎÄ±¾¿ò£¨ÒÔ±ãÏÂ´ÎÊäÈë£©¡£
+                out.write(byall);   //å°†å­—èŠ‚æ•°ç»„å†™å…¥ç½‘ç»œè¾“å‡ºæµä¸­ï¼Œç”±æœåŠ¡å™¨æ¥æ¥æ”¶ã€‚
+            //    jta.append("????"+jfText+"\n");   //å°†å®¢æˆ·ç«¯çš„æ¶ˆæ¯æ˜¾ç¤ºåœ¨æ–‡æœ¬åŒºå†…ã€‚
+            //    jf.setText("");    //å‘é€å®Œæ¶ˆæ¯åï¼Œæ¸…ç©ºæ–‡æœ¬æ¡†ï¼ˆä»¥ä¾¿ä¸‹æ¬¡è¾“å…¥ï¼‰ã€‚
                 
             } catch (IOException ex) {
-                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);//Ò»ÖÖÒì³£´¦Àí£¬²»±ØÉî¾¿¡£
+                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);//ä¸€ç§å¼‚å¸¸å¤„ç†ï¼Œä¸å¿…æ·±ç©¶ã€‚
                 
             }
         }
-    }
-    public void run(){  //Runnable½Ó¿ÚÖĞµÄ·½·¨£¨±ØĞëÊµÏÖ£©£¬Ïß³Ì¿ªÆôºóÖ´ĞĞµÄ´úÂë¡£
-        
-        while(true){        //ÒòÎªÒª²»¶ÏµØ½ÓÊÕÏûÏ¢£¬ËùÒÔÏß³ÌÒªÒ»Ö±ÔËĞĞ£¬ËùÒÔÓÃwhile(true)¡£
+    
+    public void run(){ //Runnableæ¥å£ä¸­çš„æ–¹æ³•ï¼ˆå¿…é¡»å®ç°ï¼‰ï¼Œçº¿ç¨‹å¼€å¯åæ‰§è¡Œçš„ä»£ç ã€‚
+        String compare;
+        while(true){        //Runnableæ¥å£ä¸­çš„æ–¹æ³•ï¼ˆå¿…é¡»å®ç°ï¼‰ï¼Œçº¿ç¨‹å¼€å¯åæ‰§è¡Œçš„ä»£ç ã€‚
             
-            byte[] b=new byte[1024];    //ÓÃÀ´½ÓÊÕ·şÎñÆ÷·¢À´µÄÏûÏ¢¡£
+            byte[] b=new byte[1024];     //ç”¨æ¥æ¥æ”¶æœåŠ¡å™¨å‘æ¥çš„æ¶ˆæ¯ã€‚
             
             try {
-                int count=in.read(b);   //ÓÃÍøÂçÊäÈëÁ÷¶ÁÈ¡À´×Ô·şÎñÆ÷µÄÏûÏ¢£¬·µ»Ø¶ÁÈ¡µÄÓĞĞ§×Ö½Ú¸öÊı¡£
-                
-                jta.append("·şÎñÆ÷Ëµ£º"+new String(b,0,count)+"\n");    //½«·şÎñÆ÷·¢À´µÄÏûÏ¢ÏÔÊ¾ÔÚÎÄ±¾ÇøÖĞ¡£
-                
+                int count=in.read(b);     //ç”¨ç½‘ç»œè¾“å…¥æµè¯»å–æ¥è‡ªæœåŠ¡å™¨çš„æ¶ˆæ¯ï¼Œè¿”å›è¯»å–çš„æœ‰æ•ˆå­—èŠ‚ä¸ªæ•°ã€‚
+                compare = new String(b,0,count);
+                jta.append(compare+"\n");
+                // if (compare == 'false') {
+                //     jta.append("you lose");
+                // }
+                // else{
+                //     jta.append("you win");
+                // }
+                //jta.append("?????????"+new String(b,0,count)+"\n");   //å°†æœåŠ¡å™¨å‘æ¥çš„æ¶ˆæ¯æ˜¾ç¤ºåœ¨æ–‡æœ¬åŒºä¸­ã€‚
             } catch (IOException ex) {
-                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);  //Ò»ÖÖÒì³£´¦Àí£¬²»±ØÉî¾¿¡£
+                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);  //ä¸€ç§å¼‚å¸¸å¤„ç†ï¼Œä¸å¿…æ·±ç©¶ã€‚
             }
         }
     }

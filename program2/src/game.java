@@ -3,17 +3,16 @@ import java.util.*;
 
 public class game {
     public static void main(String[] args) {
+        txtString();
+    }
+
+    public static void txtString() {
         FileReader file = null;
         try {
             file = new FileReader("word.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        txtString(file);
-    }
-
-    public static void txtString(FileReader file) {
-
         BufferedReader br = new BufferedReader(file);
         try {
             String line;
