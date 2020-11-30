@@ -25,7 +25,7 @@ public class game {
             int score = 20;
             zerofile("true.txt");
             zerofile("false.txt");
-            while (score != 0) {//������ʱ��
+            while (score != 0) {
                 int tmp = position(2100);
                 char[] v = str[tmp].toCharArray();
                 int tmp2 = position2(str[tmp].length());
@@ -33,7 +33,7 @@ public class game {
                 while (tmp3 == tmp2) {
                     tmp3 = position2(str[tmp].length());
                 }
-                char c1, c2;// ȱʧ�������ַ���ǣ����Է��򵥴�
+                char c1, c2;// 
                 String result;
                 result = str[tmp];
                 if (tmp2 < tmp3) {
@@ -105,7 +105,7 @@ public class game {
         }
     }
 
-    //���֮ǰ���ļ�����
+    //���֮ǰ���ļ�����?
     public static void zerofile(String file) {
         FileWriter fl;
         try {

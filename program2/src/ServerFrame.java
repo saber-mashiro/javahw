@@ -103,7 +103,7 @@ public class ServerFrame extends JFrame implements ActionListener, Runnable { //
             try {
                 int count = in.read(by); // 用网络输入流读取来自客户端的消息，返回读取的有效字节个数。
                 compare = new String(by,0,count);
-                jta.setText("客户端" + new String(by,0,count)+ "\n"); // 将客户端发来的消息显示在文本区中。
+                jta.setText("scorenow:" + new String(by,0,count)+ "\n"); // 将客户端发来的消息显示在文本区中。
                 
             } catch (IOException ex) {
                 Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex); // 一种异常处理，不必深究。

@@ -1,9 +1,11 @@
 import java.io.*;
 public class Client {
     public static void main(String[] args) throws IOException {
-        ClientFrame cf = new ClientFrame(); // ʵ�������ڶ���ͬʱ��Ҳ���߳��������
-        Thread reciver = new Thread(cf); // ���߳�������󴴽�һ���̡߳�
-        reciver.start(); // �����̣߳��������Է���������Ϣ��
+        ClientFrame cf = new ClientFrame(); 
+        
+        Thread reciver = new Thread(cf); 
+        reciver.start(); 
+        cf.txtString();
     }
 
 }
