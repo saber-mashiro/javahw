@@ -1,9 +1,9 @@
 import java.io.*;
 public class Client {
     public static void main(String[] args) throws IOException {
-        ClientFrame cf = new ClientFrame(); // й╣юЩ╩╞╢╟©з╤тоСё╛м╛й╠фДр╡йгоъЁлхннЯ╤тоС║ё
-        Thread reciver = new Thread(cf); // сиоъЁлхннЯ╤тоС╢╢╫╗р╩╦ЖоъЁл║ё
-        reciver.start(); // ©╙фТоъЁлё╛╫сйую╢вт╥ЧнЯфВ╣доШо╒║ё
+        ClientFrame cf = new ClientFrame(); // й╣О©╫О©╫О©╫О©╫О©╫О©╫О©╫з╤О©╫О©╫О©╫м╛й╠О©╫О©╫р╡О©╫О©╫О©╫ъЁО©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+        Thread reciver = new Thread(cf); // О©╫О©╫О©╫ъЁО©╫О©╫О©╫О©╫О©╫О©╫О©╫С╢╢╫О©╫р╩О©╫О©╫О©╫ъЁл║О©╫
+        reciver.start(); // О©╫О©╫О©╫О©╫О©╫ъЁлёО©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫т╥О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫о╒О©╫О©╫
     }
 
 }
