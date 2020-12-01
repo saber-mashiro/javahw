@@ -66,7 +66,7 @@ public class Server extends JFrame implements Runnable{
                     String[] strs = str.split("#");
                     if(strs[0].equals("LIFE")){
                         //将生命值转发给所有的客户端
-                        //sendMessage(strs[1]);
+                       // sendMessage(strs[1]);
                         int rn = rnd.nextInt(2001);
 
                         System.out.println("RdNumber:"+rn);

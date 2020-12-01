@@ -9,7 +9,7 @@ import java.util.Vector;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable, ActionListener, KeyListener {
-    private int life = 20;
+    int life = 20;
     private char keyChar;
     private JLabel lbMoveChar = new JLabel();
     private JLabel lbLife = new JLabel();
@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
     String[] vocabulary = new String[3000];
     private String first = null;
     private String second = null;
+    int flag = 0;
 
     // int in = 0;
     // int ij = 0;
@@ -240,7 +241,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
     public void checkFail() {
         // init();
         // System.out.println("开始执行checkFail："+ic);
-        lbLife.setText("当前生命值：" + life);
+        lbLife.setText("当前生命值：" + life) ;
 
         // ic++;
 
@@ -275,52 +276,61 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
         keyChar = e.getKeyChar();
         keyStr = String.valueOf(keyChar);
         System.out.println(keyStr);
-        int flag = 0;
-        if (keyStr.equalsIgnoreCase(first) && flag == 0) {
-            flag++;
-            System.out.println(flag);
-        }
-        else if (keyStr.equalsIgnoreCase(second) && flag == 1) {
-            flag++;
-            System.out.println(flag);
-            try {
-                // 判断是否选对选项
-                if (flag == 2) {
-                    writeFile("right.txt", strSave);
-
-                    life += 1;
-                    // System.out.println("选正确了");
-                    ps.println("LIFE#-1");
-                    flag = 0;
-                } else {
-
-                    writeFile("wrong.txt", strSave);
-
-                    life -= 1;
-                    // 用于向服务器标识需要随机数，对方生命值加一
-                    ps.println("LIFE#1");
-                    flag = 0;
-                }
-
-                // 实现选项射向lbMoveChar
-                // ProLocation();
-                // (Timer.scheduleAtFixedRate(TimerTask task,long delay,long period)
-                // 安排指定的任务在指定的延迟后开始进行重复的固定速率执行．
-                /*
-                 * timer.stop(); Timer timer2 = new Timer(); timer2.scheduleAtFixedRate()
-                 */
-
-                // init();
+        try {
+            if (keyStr.equalsIgnoreCase(first) && flag == 0) {
+                flag++;
+                // System.out.println(flag);
+            } else if (!keyStr.equalsIgnoreCase(first) && flag == 0) {
+                writeFile("wrong.txt", strSave);
+                life = life - 1;
+                // 用于向服务器标识需要随机数，对方生命值加一
+                // System.out.println("选cuowu了" + life) ;
+                ps.println("LIFE#1");
+                flag = 0;
                 checkFail();
-
-                // System.out.println("向服务器发消息后checkFail");
-
-            } catch (Exception ex) {
-                canRun = false;
-                javax.swing.JOptionPane.showMessageDialog(this, "游戏异常退出！");
-                System.exit(0);
+                // init();
+            } else if (keyStr.equalsIgnoreCase(second) && flag == 1) {
+                flag++;
+                // System.out.println(flag);
+                // 判断是否选对选项
+                // if (flag == 2) {
+                writeFile("right.txt", strSave);
+                life = life + 1;
+                // System.out.println("选正确了" + life) ;
+                ps.println("ASKRN#");
+                flag = 0;
+                checkFail();
+                // init();
+                // }
+            } else if (!keyStr.equalsIgnoreCase(second) && flag == 1) {
+                writeFile("wrong.txt", strSave);
+                life = life - 1;
+                // 用于向服务器标识需要随机数，对方生命值加一
+                // System.out.println("选cuowu了" + life) ;
+                ps.println("LIFE#1");
+                flag = 0;
+                checkFail();
+                // init();
             }
+            // 实现选项射向lbMoveChar
+            // ProLocation();
+            // (Timer.scheduleAtFixedRate(TimerTask task,long delay,long period)
+            // 安排指定的任务在指定的延迟后开始进行重复的固定速率执行．
+            /*
+             * timer.stop(); Timer timer2 = new Timer(); timer2.scheduleAtFixedRate()
+             */
+
+            // init();
+            //checkFail();
+
+            // System.out.println("向服务器发消息后checkFail");
+
+        } catch (Exception ex) {
+            canRun = false;
+            javax.swing.JOptionPane.showMessageDialog(this, "游戏异常退出！");
+            System.exit(0);
         }
+
     }
 
     @Override
@@ -329,7 +339,6 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
 
     public static void main(String[] args) {
         new GameFrame();
-        
     }
 
 }
