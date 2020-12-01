@@ -63,12 +63,11 @@ public class Server extends JFrame implements Runnable{
                 while (canRun){
                     //在这里
                     String str = br.readLine();
-
                     String[] strs = str.split("#");
                     if(strs[0].equals("LIFE")){
                         //将生命值转发给所有的客户端
                         //sendMessage(strs[1]);
-                        int rn = rnd.nextInt(640);
+                        int rn = rnd.nextInt(2001);
 
                         System.out.println("RdNumber:"+rn);
                         System.out.println("减或加生命值");
@@ -80,7 +79,7 @@ public class Server extends JFrame implements Runnable{
                         String msgWIN = "UWIN#";
                         sendMessage(msgWIN);
                     }else if(strs[0].equals("ASKRN")){
-                        int rn1 = rnd.nextInt(640);
+                        int rn1 = rnd.nextInt(2001);
                         String swn1 = "START#" + Integer.toString(rn1);
                         System.out.println("仅用于同步");
                         sendMessage(swn1);

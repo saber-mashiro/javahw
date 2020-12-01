@@ -75,7 +75,6 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
             OutputStream os = s.getOutputStream();
             ps = new PrintStream(os);
             new Thread(this).start();
-
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "游戏异常退出！");
             System.exit(0);
@@ -152,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                     first = character1;
                     String character2 = new String(second1);
                     second = character2;
-                    System.out.println(first);
+                    System.out.println(first + " " + second);
                     select[tmp2] = '_';
                     select[tmp3] = '_';
                     String strall = new String(select);
@@ -275,47 +274,52 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
     public void keyPressed(KeyEvent e) {
         keyChar = e.getKeyChar();
         keyStr = String.valueOf(keyChar);
-        try {
-            // 判断是否选对选项
-            int flag = 0;
-            if (keyStr.equalsIgnoreCase(first)) {
-                flag++;
-            } else if (keyStr.equalsIgnoreCase(second) && flag == 1) {
-                flag++;
+        System.out.println(keyStr);
+        int flag = 0;
+        if (keyStr.equalsIgnoreCase(first) && flag == 0) {
+            flag++;
+            System.out.println(flag);
+        }
+        else if (keyStr.equalsIgnoreCase(second) && flag == 1) {
+            flag++;
+            System.out.println(flag);
+            try {
+                // 判断是否选对选项
+                if (flag == 2) {
+                    writeFile("right.txt", strSave);
+
+                    life += 1;
+                    // System.out.println("选正确了");
+                    ps.println("LIFE#-1");
+                    flag = 0;
+                } else {
+
+                    writeFile("wrong.txt", strSave);
+
+                    life -= 1;
+                    // 用于向服务器标识需要随机数，对方生命值加一
+                    ps.println("LIFE#1");
+                    flag = 0;
+                }
+
+                // 实现选项射向lbMoveChar
+                // ProLocation();
+                // (Timer.scheduleAtFixedRate(TimerTask task,long delay,long period)
+                // 安排指定的任务在指定的延迟后开始进行重复的固定速率执行．
+                /*
+                 * timer.stop(); Timer timer2 = new Timer(); timer2.scheduleAtFixedRate()
+                 */
+
+                // init();
+                checkFail();
+
+                // System.out.println("向服务器发消息后checkFail");
+
+            } catch (Exception ex) {
+                canRun = false;
+                javax.swing.JOptionPane.showMessageDialog(this, "游戏异常退出！");
+                System.exit(0);
             }
-            if (flag == 2) {
-                writeFile("right.txt", strSave);
-
-                life += 1;
-                // System.out.println("选正确了");
-                ps.println("LIFE#-1");
-                flag = 0;
-            } else {
-
-                writeFile("wrong.txt", strSave);
-
-                life -= 1;
-                // 用于向服务器标识需要随机数，对方生命值加一
-                ps.println("LIFE#1");
-                flag = 0;
-            }
-            // 实现选项射向lbMoveChar
-            // ProLocation();
-            // (Timer.scheduleAtFixedRate(TimerTask task,long delay,long period)
-            // 安排指定的任务在指定的延迟后开始进行重复的固定速率执行．
-            /*
-             * timer.stop(); Timer timer2 = new Timer(); timer2.scheduleAtFixedRate()
-             */
-
-            init();
-            checkFail();
-
-            // System.out.println("向服务器发消息后checkFail");
-
-        } catch (Exception ex) {
-            canRun = false;
-            javax.swing.JOptionPane.showMessageDialog(this, "游戏异常退出！");
-            System.exit(0);
         }
     }
 
@@ -325,6 +329,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
 
     public static void main(String[] args) {
         new GameFrame();
+        
     }
 
 }
