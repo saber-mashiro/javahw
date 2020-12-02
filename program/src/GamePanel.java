@@ -13,18 +13,13 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
     private char keyChar;
     private JLabel lbMoveChar = new JLabel();
     private JLabel lbLife = new JLabel();
-    // 选项ABCD
     private JLabel lb = new JLabel();
-
     private Socket s = null;
     private Timer timer = new Timer(300, this);
-
     private Random rnd = new Random();
     private BufferedReader br = null;
     private PrintStream ps = null;
-
     private String word = null;
-    // private String Opt = null;
     private int il;
     String strSave = null;
     String keyStr = null;
@@ -184,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
         // 不需要客户端产生随机数了，服务器产生随机数
         // int il = rnd.nextInt(10);
         // ps.println("RND#"+il);
-        readLineFile("D:\\vscode\\javahw\\program\\src\\word.txt", il);
+        readLineFile("word.txt", il);
         // System.out.println("aaa:"+il);
         lb.setBounds(0, 400, 300, 50);
 
@@ -281,7 +276,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                 flag++;
                 // System.out.println(flag);
             } else if (!keyStr.equalsIgnoreCase(first) && flag == 0) {
-                writeFile("D:\\vscode\\javahw\\program\\src\\wrong.txt", strSave);
+                writeFile("wrong.txt", strSave);
                 life = life - 2;
                 // 用于向服务器标识需要随机数，对方生命值加一
                 // System.out.println("选cuowu了" + life) ;
@@ -294,7 +289,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                 // System.out.println(flag);
                 // 判断是否选对选项
                 // if (flag == 2) {
-                writeFile("D:\\vscode\\javahw\\program\\src\\right.txt", strSave);
+                writeFile("right.txt", strSave);
                 life = life + 2;
                 //System.out.println("right " + life);
                 checkFail();
@@ -305,7 +300,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                 // init();
                 // }
             } else if (!keyStr.equalsIgnoreCase(second) && flag == 1) {
-                writeFile("D:\\vscode\\javahw\\program\\src\\wrong.txt", strSave);
+                writeFile("wrong.txt", strSave);
                 life = life - 2;
                 // 用于向服务器标识需要随机数，对方生命值加一
                 // System.out.println("选cuowu了" + life) ;
