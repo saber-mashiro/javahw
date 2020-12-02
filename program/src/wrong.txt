@@ -1,8 +1,2 @@
-   herald               ad.传令官；通报者
-   inlet                n.进口，水湾 vt.引进
-   offence              n.犯罪，犯规；冒犯
-   episode              n.一段情节；插曲
-   denial               n.否定；拒绝相信
-   anybody              n.重要人物
-   thermal              a.热的；温泉的
-   breakdown            n.崩溃，倒塌；失败
+   pasture              n.牧场；牲畜饲养
+   reverse              n.背面，反面

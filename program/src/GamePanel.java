@@ -9,7 +9,7 @@ import java.util.Vector;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable, ActionListener, KeyListener {
-    int life = 20;
+    private int life = 20;
     private char keyChar;
     private JLabel lbMoveChar = new JLabel();
     private JLabel lbLife = new JLabel();
@@ -65,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
         lbMoveChar.setFont(new Font("黑体", Font.BOLD, 20));
         lbMoveChar.setForeground(Color.WHITE);
 
+        //lbLife.setText("当前生命值：" + life);
         this.init();
         this.addKeyListener(this);
         try {
@@ -122,7 +123,6 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                     strSave = str1 + "\r\n";
                     String[] strs1 = str1.split("\\s+");
                     String answer;
-                    // 炸掉的地方
                     answer = strs1[1];
                     // System.out.println(answer);
                     lb.setText(strs1[2]);
@@ -184,7 +184,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
         // 不需要客户端产生随机数了，服务器产生随机数
         // int il = rnd.nextInt(10);
         // ps.println("RND#"+il);
-        readLineFile("word.txt", il);
+        readLineFile("D:\\vscode\\javahw\\program\\src\\word.txt", il);
         // System.out.println("aaa:"+il);
         lb.setBounds(0, 400, 300, 50);
 
@@ -258,10 +258,10 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
     public void actionPerformed(ActionEvent e) {
         if (lbMoveChar.getY() >= this.getHeight()) {
             writeFile("wrong.txt", strSave);
-            life--;
-            checkFail();
+            //life--;
+            //checkFail();
             // 随机数由服务器产生
-            ps.println("ASKRN#");
+            ps.println("LIFE#-1");
             // System.out.println("底部调用checkFail");
         }
         lbMoveChar.setLocation(lbMoveChar.getX(), lbMoveChar.getY() + 10);
@@ -281,8 +281,8 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                 flag++;
                 // System.out.println(flag);
             } else if (!keyStr.equalsIgnoreCase(first) && flag == 0) {
-                writeFile("wrong.txt", strSave);
-                life = life - 1;
+                writeFile("D:\\vscode\\javahw\\program\\src\\wrong.txt", strSave);
+                life = life - 2;
                 // 用于向服务器标识需要随机数，对方生命值加一
                 // System.out.println("选cuowu了" + life) ;
                 ps.println("LIFE#1");
@@ -294,17 +294,19 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
                 // System.out.println(flag);
                 // 判断是否选对选项
                 // if (flag == 2) {
-                writeFile("right.txt", strSave);
-                life = life + 1;
-                // System.out.println("选正确了" + life) ;
-                ps.println("ASKRN#");
-                flag = 0;
+                writeFile("D:\\vscode\\javahw\\program\\src\\right.txt", strSave);
+                life = life + 2;
+                //System.out.println("right " + life);
                 checkFail();
+                // ps.println("ASKRN#");
+                ps.println("LIFE#-1");
+                flag = 0;
+                
                 // init();
                 // }
             } else if (!keyStr.equalsIgnoreCase(second) && flag == 1) {
-                writeFile("wrong.txt", strSave);
-                life = life - 1;
+                writeFile("D:\\vscode\\javahw\\program\\src\\wrong.txt", strSave);
+                life = life - 2;
                 // 用于向服务器标识需要随机数，对方生命值加一
                 // System.out.println("选cuowu了" + life) ;
                 ps.println("LIFE#1");
@@ -321,7 +323,7 @@ public class GamePanel extends JPanel implements Runnable, ActionListener, KeyLi
              */
 
             // init();
-            //checkFail();
+            // checkFail();
 
             // System.out.println("向服务器发消息后checkFail");
 
